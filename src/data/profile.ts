@@ -40,7 +40,6 @@ export const ROLES: Role[] = [
   { id: 'cyberLangaSupport', start: '2025-06', end: '2025-11', location: 'Morarano, Toamasina' },
   { id: 'tsararivotra', start: '2025-01', end: '2025-03', location: 'Verrery, Toamasina' },
   { id: 'cyberLangaDev', start: '2024-10', end: '2024-12', location: 'Morarano, Toamasina' },
-  { id: 'cashPoint', start: '2023-05', end: '2023-07', location: 'Toamasina' },
 ]
 
 export type Degree = {
@@ -83,11 +82,11 @@ export type SkillDomain = {
 }
 
 export const SKILL_DOMAINS: SkillDomain[] = [
-  { id: 'languages', icon: 'terminal', items: ['Java', 'Python', 'PHP', 'JavaScript'] },
+  { id: 'languages', icon: 'terminal', items: ['Java', 'Python', 'PHP', 'JavaScript', 'Rust'] },
   {
     id: 'web',
     icon: 'layoutTemplate',
-    items: ['Spring Boot', 'FastAPI', 'React', 'Vue.js', 'HTML', 'CSS', 'Bootstrap', 'Tailwind CSS'],
+    items: ['Spring Boot', 'FastAPI', 'React', 'Vue.js', 'Tauri', 'HTML', 'CSS', 'Bootstrap', 'Tailwind CSS'],
   },
   { id: 'database', icon: 'database', items: ['MySQL', 'PostgreSQL', 'SQLite', 'H2', 'SQL'] },
   { id: 'tools', icon: 'gitBranch', items: ['Git', 'GitHub', 'UML', 'MERISE'] },

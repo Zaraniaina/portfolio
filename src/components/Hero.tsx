@@ -6,6 +6,10 @@ import { CONTACT } from '../data/profile'
 // (docs/design.md §9 asks for a square crop; the source is portrait).
 import profilePhoto from '../assets/moi.webp'
 
+// `base: './'` in vite.config.ts makes the URL work from any sub-path
+// (GitHub Pages project sites). Served as-is from public/.
+const CV_URL = `${import.meta.env.BASE_URL}CV_Zaraniaina.pdf`
+
 /**
  * The hero is the site's single "élément marquant" (design.md §1.4): the name
  * and the photo. Everything after this section stays deliberately quiet.
@@ -42,7 +46,11 @@ export function Hero() {
             <ButtonLink href="#contact" icon="mail">
               {t('hero.ctaContact')}
             </ButtonLink>
-            <ButtonLink href="#projects" variant="secondary" icon="layoutTemplate">
+            {/* FR PDF today; the EN button appears only once its PDF exists. */}
+            <ButtonLink href={CV_URL} variant="secondary" icon="download" download>
+              {t('hero.ctaCv')}
+            </ButtonLink>
+            <ButtonLink href="#projects" variant="discreet" icon="layoutTemplate">
               {t('hero.ctaProjects')}
             </ButtonLink>
           </div>

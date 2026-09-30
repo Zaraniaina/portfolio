@@ -41,6 +41,19 @@ export const PROJECTS: Project[] = [
     imageAlt: null,
   },
   {
+    id: 'eventsite',
+    featured: false,
+    stack: [
+      { labelKey: 'stack.frontend', items: ['TypeScript', 'Vite'] },
+    ],
+    // docs/projets.md: the code address returned 404 during its last check;
+    // it now answers, but the demo URL is still unknown and stays hidden.
+    repoUrl: 'https://github.com/Zaraniaina/mariage-Zaraniaina-Sarobidy',
+    demoUrl: null,
+    image: null,
+    imageAlt: null,
+  },
+  {
     id: 'epicerie',
     featured: false,
     stack: [],

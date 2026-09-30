@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Icon } from './Icon'
+import { Reveal } from './Reveal'
 import { BadgeGroup, BadgeItem, ButtonLink, Section } from './ui'
 import { PROJECTS, type Project } from '../data/projects'
 
@@ -129,19 +130,22 @@ export function Projects() {
   return (
     <Section id="projects" title={t('projects.title')} lead={t('projects.lead')} alt icon="layoutTemplate">
       {featured.map((project) => (
-        <div key={project.id} className="mb-12">
+        <Reveal key={project.id} className="mb-12">
           <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent-soft px-3 py-1 text-[0.8125rem] font-semibold text-accent">
             <Icon name="sparkles" size={16} />
             {t('projects.flagship')}
           </p>
           <ProjectCard project={project} />
-        </div>
+        </Reveal>
       ))}
 
-      {/* §5 — two columns on desktop, one on mobile. */}
+      {/* §5 — two columns on desktop, one on mobile. Each card arrives with a
+          small stagger so the grid reads as a sequence. */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {rest.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+        {rest.map((project, index) => (
+          <Reveal key={project.id} delay={index * 90}>
+            <ProjectCard project={project} />
+          </Reveal>
         ))}
       </div>
     </Section>

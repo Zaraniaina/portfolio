@@ -8,7 +8,7 @@ A complete bilingual single-page portfolio exists: hero, about, projects, skills
 
 Language is chosen by **route**: `/` is French, `/en` is English, and one `Portfolio` component serves both. `vite.config.ts` sets `base: './'` so the build works from any sub-path (GitHub Pages project sites).
 
-Still missing because the source data is genuinely unavailable — do not fabricate them: TiaInfoBuild demo URL and screenshots, LinkedIn, the FR/EN CV PDFs, and an AI/MCP project. These are `null` in `src/data/` and their UI is omitted.
+Still missing because the source data is genuinely unavailable — do not fabricate them: TiaInfoBuild demo URL and screenshots, LinkedIn, the EN CV PDF (the FR PDF ships from `public/CV_Zaraniaina.pdf`), and an AI/MCP project. These are `null` in `src/data/` and their UI is omitted. The contact form sends via EmailJS (`src/lib/email.ts`, service `service_cganejd` from `docs/emailJS.md`) when `VITE_EMAILJS_TEMPLATE_ID` + `VITE_EMAILJS_PUBLIC_KEY` are set, and falls back to a prefilled `mailto:` otherwise.
 
 Unused dependencies that are installed but never imported: `framer-motion`, `@emailjs/browser`, `postcss`, `autoprefixer`. Tailwind v4 works through `@tailwindcss/vite` with no PostCSS config. Don't assume a package in `package.json` is in use — grep for it first.
 
@@ -34,7 +34,7 @@ From `docs/design.md` §11 and §2–§10. These are constraints, not suggestion
 - **No forced uppercase** on titles or labels, sentence case throughout. No `01 / 02 / 03` numbering outside the chronological timeline.
 - **No decorative gradients, no strong shadows.** Hierarchy comes from borders and background color. The only sanctioned shadow is `0 1px 2px rgba(36, 52, 63, 0.06)`.
 - **No auto-appended arrows** at the end of buttons. No hover-zoom on cards — only a border shift to `--accent-deco`.
-- **Motion is minimal**: one 300ms entrance on the hero, 150ms color transitions on interactive elements, no scroll/parallax animation, and a global `prefers-reduced-motion` kill switch.
+- **Motion is minimal**: one 300ms entrance on the hero, 150ms color transitions, plus a one-shot soft reveal per section (component `Reveal`, no repeat/parallax) and a 200ms theme cross-fade — all covered by the global `prefers-reduced-motion` kill switch.
 - Never convey information by color alone — pair it with an icon or text.
 
 Theming is CSS custom properties (see §2 of `design.md` for the full light + dark block). Dark mode is driven by `:root[data-theme="dark"]` with a `prefers-color-scheme` fallback for `:root:not([data-theme="light"])`. **Reuse those variables; do not hardcode hex values in components.**

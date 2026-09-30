@@ -35,6 +35,7 @@ export default {
     proof: 'ERP BTP en ligne et hors ligne, application de bureau Tauri',
     location: 'Toamasina, Madagascar',
     ctaContact: 'Me contacter',
+    ctaCv: 'Télécharger mon CV',
     ctaProjects: 'Voir mes projets',
   },
 
@@ -49,9 +50,9 @@ export default {
     statsTitle: 'En quelques chiffres',
     stats: {
       experience: 'Expériences professionnelles',
-      experienceValue: '5',
+      experienceValue: '4',
       years: "Années d'activité",
-      yearsValue: '3',
+      yearsValue: '2',
       tech: 'Technologies maîtrisées',
       techValue: '20+',
     },
@@ -138,6 +139,17 @@ export default {
           'Développement de l’application',
         ],
       },
+      eventsite: {
+        title: 'Site événementiel — page unique',
+        summary:
+          'Site complet pour un événement : accueil en vidéo, compte à rebours, programme, lieu, galerie et réponse des invités.',
+        contribution: [
+          'Préchargeur, navigation avec menu mobile et accueil vidéo',
+          'Compte à rebours jusqu’au jour J, programme, galerie en arbre de vie et formulaire de réponse',
+          'Musique de fond avec contrôle manuel et ambiance réactive (particules, halos, égaliseur)',
+          'Publication automatisée sur GitHub Pages',
+        ],
+      },
       cyberlanga: {
         title: 'Outil de vente, stock et facturation — Cyber Langa',
         summary:
@@ -185,13 +197,6 @@ export default {
           'Création d’outils de vente, de gestion de stock et de facturation',
         ],
       },
-      cashPoint: {
-        title: 'Gestionnaire de flux financiers — Cash Point Privé',
-        bullets: [
-          'Gestion des espèces, entrées et sorties',
-          'Relation client et résolution des réclamations',
-        ],
-      },
     },
     degrees: {
       master2: 'Master 2 en Génie Informatique',
@@ -221,6 +226,7 @@ export default {
     sentDetail: 'Merci, je vous réponds dès que possible.',
     errorGeneric:
       'Le message n’a pas pu être envoyé. Écrivez-moi directement par email, le lien de secours est juste à côté.',
+    openMailApp: 'Ouvrir mon application mail avec le message prérempli',
     required: 'Champ obligatoire',
     invalidEmail: 'Saisis une adresse email valide',
     tooShort: 'Le message doit contenir au moins 10 caractères',

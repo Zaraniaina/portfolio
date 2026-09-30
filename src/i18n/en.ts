@@ -35,6 +35,7 @@ export default {
     proof: 'Online and offline construction ERP, plus a Tauri desktop app',
     location: 'Toamasina, Madagascar',
     ctaContact: 'Get in touch',
+    ctaCv: 'Download my CV',
     ctaProjects: 'See my projects',
   },
 
@@ -49,9 +50,9 @@ export default {
     statsTitle: 'By the numbers',
     stats: {
       experience: 'Professional roles',
-      experienceValue: '5',
+      experienceValue: '4',
       years: 'Years of experience',
-      yearsValue: '3',
+      yearsValue: '2',
       tech: 'Technologies',
       techValue: '20+',
     },
@@ -135,6 +136,17 @@ export default {
         problem: 'Sales and stock were being tracked by hand.',
         contribution: ['Database design', 'Application development'],
       },
+      eventsite: {
+        title: 'Event website — single page',
+        summary:
+          'A complete event site: video intro, countdown, programme, venue, gallery and guest RSVP.',
+        contribution: [
+          'Preloader, navigation with mobile menu and video welcome section',
+          'Countdown to the big day, programme, tree-of-life gallery and RSVP form',
+          'Background music with manual control and music-reactive ambience (particles, halos, equaliser)',
+          'Automated publishing to GitHub Pages',
+        ],
+      },
       cyberlanga: {
         title: 'Sales, stock and invoicing — Cyber Langa',
         summary:
@@ -183,13 +195,6 @@ export default {
           'Built sales, stock and invoicing tools',
         ],
       },
-      cashPoint: {
-        title: 'Financial Flow Manager — Cash Point Privé',
-        bullets: [
-          'Managed cash inflows and outflows',
-          'Customer relations and complaint resolution',
-        ],
-      },
     },
     degrees: {
       master2: 'Master’s degree in Computer Engineering',
@@ -219,6 +224,7 @@ export default {
     sentDetail: 'Thank you — I will reply as soon as I can.',
     errorGeneric:
       'The message could not be sent. Please email me directly instead; the fallback link is alongside.',
+    openMailApp: 'Open your mail app with the message prefilled',
     required: 'This field is required',
     invalidEmail: 'Enter a valid email address',
     tooShort: 'Your message needs at least 10 characters',

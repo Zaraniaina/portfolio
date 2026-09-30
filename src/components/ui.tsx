@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Icon, type IconName } from './Icon'
+import { Reveal } from './Reveal'
 
 /* ---------------------------------------------------------------------------
    Section rhythm — design.md §4: 96px between sections on desktop, 64px on
@@ -34,7 +35,8 @@ export function Section({ id, title, lead, children, alt = false, icon }: Sectio
           </div>
           {lead ? <p className="measure mt-4 text-muted">{lead}</p> : null}
         </header>
-        {children}
+        {/* One soft entrance per section (see Reveal). */}
+        <Reveal>{children}</Reveal>
       </div>
     </section>
   )
@@ -64,6 +66,8 @@ type ButtonLinkProps = {
   children: ReactNode
   className?: string
   external?: boolean
+  /** Same-origin download hint (used for the CV PDF). */
+  download?: boolean
   onClick?: () => void
   'aria-label'?: string
 }
@@ -75,6 +79,7 @@ export function ButtonLink({
   children,
   className = '',
   external = false,
+  download = false,
   onClick,
   'aria-label': ariaLabel,
 }: ButtonLinkProps) {
@@ -84,6 +89,7 @@ export function ButtonLink({
       className={`${BUTTON_BASE} ${BUTTON_VARIANTS[variant]} ${className}`}
       onClick={onClick}
       aria-label={ariaLabel}
+      {...(download ? { download: '' } : {})}
       {...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
     >
       {icon ? <Icon name={icon} size={18} /> : null}

@@ -4,6 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { Icon, type IconName } from './Icon'
 import { Button, Note, Section } from './ui'
 import { CONTACT } from '../data/profile'
+import {
+  isEmailConfigured,
+  mailtoHref,
+  sendContactEmail,
+  type ContactPayload,
+} from '../lib/email'
 
 type FormValues = {
   name: string
@@ -14,16 +20,34 @@ type FormValues = {
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
+/** Small inline spinner shown while the EmailJS request is in flight. */
+function Spinner() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="size-4 animate-spin"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+    >
+      <path d="M21 12a9 9 0 1 1-6.2-8.56" />
+    </svg>
+  )
+}
+
 /**
- * There is no serverless endpoint configured, so rather than invent a Formspree
- * ID the form composes a prefilled `mailto:` in the visitor's own client. That
- * works with zero backend and zero third-party data sharing, and the direct
- * email / phone / WhatsApp links below remain the fallback
- * (docs/prompt_portfolio.md: « un simple lien mailto: en secours »).
+ * Sends through EmailJS when it is configured (see .env.example), and falls
+ * back to a prefilled `mailto:` otherwise — or when the API rejects the send.
+ * The fallback is offered as a real action button rather than forced on the
+ * visitor, and the direct email / phone / WhatsApp links on the right remain
+ * the permanent safety net (docs/prompt_portfolio.md).
  */
 export function Contact() {
   const { t } = useTranslation()
   const [status, setStatus] = useState<Status>('idle')
+  const [fallbackHref, setFallbackHref] = useState<string | null>(null)
 
   const {
     register,
@@ -31,16 +55,31 @@ export function Contact() {
     formState: { errors },
   } = useForm<FormValues>()
 
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = async (values: FormValues) => {
     setStatus('sending')
-    const body = `${values.message}\n\n—\n${values.name}\n${values.email}`
-    const href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
-      values.subject || t('contact.formTitle'),
-    )}&body=${encodeURIComponent(body)}`
+    setFallbackHref(null)
 
-    window.location.assign(href)
-    // The visitor is handed to their mail client; the confirmation below tells
-    // them what to expect rather than claiming a server accepted the message.
+    const payload: ContactPayload = {
+      name: values.name,
+      email: values.email,
+      subject: values.subject,
+      message: values.message,
+    }
+
+    if (isEmailConfigured()) {
+      const accepted = await sendContactEmail(payload)
+      if (accepted) {
+        setStatus('sent')
+        return
+      }
+      setStatus('error')
+      setFallbackHref(mailtoHref(payload, CONTACT.email, t('contact.formTitle')))
+      return
+    }
+
+    // EmailJS not configured in this deployment: open the visitor's mail
+    // client with everything prefilled, as before.
+    window.location.assign(mailtoHref(payload, CONTACT.email, t('contact.formTitle')))
     setStatus('sent')
   }
 
@@ -156,12 +195,30 @@ export function Contact() {
 
             <div className="flex flex-wrap items-center gap-4">
               <Button type="submit" icon="send" disabled={status === 'sending'}>
-                {status === 'sending' ? t('contact.sending') : t('contact.submit')}
+                {status === 'sending' ? (
+                  <>
+                    <Spinner />
+                    {t('contact.sending')}
+                  </>
+                ) : (
+                  t('contact.submit')
+                )}
               </Button>
             </div>
 
             {status === 'sent' ? <Note tone="success">{t('contact.sentDetail')}</Note> : null}
-            {status === 'error' ? <Note tone="error">{t('contact.errorGeneric')}</Note> : null}
+            {status === 'error' ? (
+              <Note tone="error">{t('contact.errorGeneric')}</Note>
+            ) : null}
+            {status === 'error' && fallbackHref ? (
+              <a
+                href={fallbackHref}
+                className="inline-flex min-h-11 items-center gap-2 text-[0.9375rem] font-semibold text-accent underline-offset-4 transition-colors duration-150 hover:text-accent-hover hover:underline"
+              >
+                <Icon name="mail" size={18} />
+                {t('contact.openMailApp')}
+              </a>
+            ) : null}
           </form>
         </div>
 

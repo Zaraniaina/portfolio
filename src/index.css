@@ -120,6 +120,8 @@
     /* Sticky header height + breathing room, so anchor links don't land
        underneath the nav. */
     scroll-padding-top: 5.5rem;
+    /* Soft cross-fade when the light/dark theme changes. */
+    transition: background-color 200ms ease, color 200ms ease;
   }
 
   body {
@@ -225,10 +227,37 @@
   .band-alt {
     background-color: var(--surface-alt);
   }
+
+  /* §8 (étendu) — soft one-shot reveal for section content. It is a plain
+     opacity/transform transition driven by the Reveal component (one-shot,
+     no repeat, no parallax). Without JavaScript or with prefers-reduced-motion
+     the content is simply visible: the hidden state only exists between the
+     class being applied and the observer firing. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 480ms ease-out,
+      transform 480ms ease-out;
+  }
+
+  .reveal-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 }
 
 /* §8 — one global reduced-motion kill switch. The site has almost no motion,
-   but the hero entrance and the 150ms transitions are still disabled here. */
+   but the hero entrance, the section reveals and the 150ms transitions are
+   still disabled here. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

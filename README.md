@@ -41,7 +41,18 @@ Il n'y a pas de tests : aucun framework de test n'est installé.
 
 Quand une donnée manque (lien de démo, capture, chiffre, LinkedIn), mettez `null` et **l'élément n'est pas affiché**. N'écrivez jamais de texte d'exemple, de lien factice ni de nombre inventé.
 
-Manquants en ce moment : lien de démo et captures de TiaInfoBuild, lien LinkedIn, CV en PDF (français et anglais).
+Manquants en ce moment : lien de démo et captures de TiaInfoBuild, lien LinkedIn, CV en PDF anglais (le CV français est en place : bouton « Télécharger mon CV » du hero).
+
+## Formulaire de contact et EmailJS
+
+Le formulaire envoie via **EmailJS** quand il est configuré, sinon il ouvre un `mailto:` pré-rempli (et propose ce repli après un échec d'envoi). Configuration dans un fichier `.env.local` (voir `.env.example`) :
+
+```bash
+VITE_EMAILJS_TEMPLATE_ID=…   # ID du template dans le tableau de bord EmailJS
+VITE_EMAILJS_PUBLIC_KEY=…    # clé publique du compte
+```
+
+Le service ID (`service_cganejd`) est déjà codé dans `src/lib/email.ts` (voir `docs/emailJS.md`). Noms de variables du template attendus : `from_name`, `from_email`, `reply_to`, `subject`, `message`.
 
 ## Ajouter une langue
 
