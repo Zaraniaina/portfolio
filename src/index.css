@@ -1,0 +1,240 @@
+@import 'tailwindcss';
+
+/* Dark mode is driven by an explicit attribute, not the OS preference, so a
+   visitor's choice can be stored and win over prefers-color-scheme. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens — docs/design.md §2. Light is the default theme.
+   Naming is the brief's own (Brume, Écume, Lagon, Lavande…). Do not hardcode
+   hex values in components: always go through these variables so both themes
+   and the contrast rules in §2 stay intact.
+   --------------------------------------------------------------------------- */
+:root {
+  --bg: #f3f6f7; /* Brume — fond de page */
+  --surface: #fbfcfc; /* Écume — cartes, en-tête, formulaires */
+  --surface-alt: #e9eff1; /* Sable froid — sections alternées */
+  --border: #d5dfe3; /* Galet */
+  --text: #24343f; /* Ardoise */
+  --text-muted: #566873; /* Bruine */
+  --accent: #3a6e6f; /* Lagon */
+  --accent-hover: #2f5b5c; /* Lagon profond */
+  --accent-deco: #4f8a8b; /* Eau claire — icônes, jamais pour du texte */
+  --accent-soft: #dcebea; /* Vert d'eau */
+  --lavender: #8e8cc4; /* Lavande */
+  --lavender-soft: #e8e7f4; /* Voile lavande */
+  /* design.md §2 forbids --lavender as body text on a light background (it is
+     decorative only). This darker step is the text-safe lavender, used for the
+     AI badge variant. */
+  --lavender-ink: #56548f;
+  --success: #4c8c74; /* Vert sauge */
+  --info: #4a7fa8; /* Bleu doux */
+  --warning: #b0913a; /* Moutarde éteint */
+  --error: #b0526a; /* Rose framboise — jamais rouge vif, jamais orange */
+
+  --shadow: 0 1px 2px rgb(36 52 63 / 0.06);
+  --nav-bg: rgb(251 252 252 / 0.9);
+
+  /* §3 — Sora / Nunito Sans / JetBrains Mono, with system fallbacks. The raw
+     stacks are named `--font-*` and exposed to Tailwind under role names, so
+     the @theme mapping below never references itself. */
+  --font-sora: 'Sora', system-ui, sans-serif;
+  --font-nunito: 'Nunito Sans', system-ui, sans-serif;
+  --font-mono-stack: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* An explicit dark choice always wins. */
+:root[data-theme='dark'] {
+  --bg: #1c2a32;
+  --surface: #243640;
+  --surface-alt: #2a3f4a;
+  --border: #354954;
+  --text: #e3ebee;
+  --text-muted: #9fb2bb;
+  --accent: #86c3c2;
+  --accent-hover: #a0d3d2;
+  --accent-deco: #86c3c2;
+  --accent-soft: #2c4a4e;
+  --lavender: #b3b1e0;
+  --lavender-soft: #37385a;
+  --lavender-ink: #c7c5ee;
+
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+  --nav-bg: rgb(36 54 64 / 0.9);
+}
+
+/* …but a first-time visitor with no stored preference still follows the OS. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #1c2a32;
+    --surface: #243640;
+    --surface-alt: #2a3f4a;
+    --border: #354954;
+    --text: #e3ebee;
+    --text-muted: #9fb2bb;
+    --accent: #86c3c2;
+    --accent-hover: #a0d3d2;
+    --accent-deco: #86c3c2;
+    --accent-soft: #2c4a4e;
+    --lavender: #b3b1e0;
+    --lavender-soft: #37385a;
+    --lavender-ink: #c7c5ee;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+    --nav-bg: rgb(36 54 64 / 0.9);
+  }
+}
+
+/* Expose the tokens to Tailwind utilities (bg-surface, text-accent, …) while
+   keeping them theme-reactive via `inline`. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-border: var(--border);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-deco: var(--accent-deco);
+  --color-accent-soft: var(--accent-soft);
+  --color-lavender: var(--lavender);
+  --color-lavender-soft: var(--lavender-soft);
+  --color-lavender-ink: var(--lavender-ink);
+  --color-success: var(--success);
+  --color-info: var(--info);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+
+  --font-display: var(--font-sora);
+  --font-body: var(--font-nunito);
+  --font-mono: var(--font-mono-stack);
+
+  /* §4 — the only sanctioned shadow. Hierarchy comes from borders, not depth. */
+  --shadow-soft: var(--shadow);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Sticky header height + breathing room, so anchor links don't land
+       underneath the nav. */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    /* §3 — body copy is 17px / 1.7 */
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    color: var(--text);
+    /* §3 — sentence case everywhere, never forced uppercase */
+    text-transform: none;
+    text-wrap: balance;
+  }
+
+  h2 {
+    /* §3 — 2rem / 1.2 */
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    /* §3 — 1.25rem / 1.3 */
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  code,
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  /* §10 — focus is always visible, never removed. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--text);
+  }
+}
+
+@layer components {
+  /* §3 — 65ch measure, left aligned, never justified. */
+  .measure {
+    max-width: 65ch;
+  }
+
+  /* §8 — the site's one and only entrance animation: a soft fade and rise on
+     the hero title and photo, 300ms. Disabled by the reduced-motion
+     kill switch at the bottom of this file. */
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .enter {
+    animation: enter 300ms ease-out both;
+  }
+
+  /* Staggered slightly so the title and photo arrive in sequence rather than
+     as one flat block. */
+  .enter-delay {
+    animation: enter 300ms ease-out 80ms both;
+  }
+
+  /* §5 — 1100px content width. */
+  .shell {
+    width: 100%;
+    max-width: 1100px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  /* §4 — alternating section backgrounds */
+  .band-alt {
+    background-color: var(--surface-alt);
+  }
+}
+
+/* §8 — one global reduced-motion kill switch. The site has almost no motion,
+   but the hero entrance and the 150ms transitions are still disabled here. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

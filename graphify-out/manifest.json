@@ -1,0 +1,26 @@
+{
+  "design.md": {
+    "mtime": 1790752079.6343112,
+    "seen": 1790756228.656092,
+    "ast_hash": "b68c7db7baa53c867870357c5023d6ec",
+    "semantic_hash": "b68c7db7baa53c867870357c5023d6ec"
+  },
+  "portfolio_zaraniaina.md": {
+    "mtime": 1790751643.8573737,
+    "seen": 1790756228.6561003,
+    "ast_hash": "ac5794ab488e4c3de5c2bf8ed78cf206",
+    "semantic_hash": "ac5794ab488e4c3de5c2bf8ed78cf206"
+  },
+  "projets.md": {
+    "mtime": 1790752448.3703463,
+    "seen": 1790756228.656105,
+    "ast_hash": "f4c9feef276ae1d68d3eda1438ca0863",
+    "semantic_hash": "f4c9feef276ae1d68d3eda1438ca0863"
+  },
+  "prompt_portfolio.md": {
+    "mtime": 1790753322.8705647,
+    "seen": 1790756228.6561072,
+    "ast_hash": "7be4c7f4a678e81167787ac34d271fae",
+    "semantic_hash": "7be4c7f4a678e81167787ac34d271fae"
+  }
+}
