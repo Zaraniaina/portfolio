@@ -209,6 +209,19 @@
     animation: enter 300ms ease-out both;
   }
 
+  /* Toast de confirmation du formulaire : petit fondu + montée à l'apparition.
+     La disparition est immédiate (pas d'état de sortie à gérer). */
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   /* Staggered slightly so the title and photo arrive in sequence rather than
      as one flat block. */
   .enter-delay {

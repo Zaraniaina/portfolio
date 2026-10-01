@@ -244,6 +244,7 @@ export default {
     errorGeneric:
       'The message could not be sent. Please email me directly instead; the fallback link is alongside.',
     openMailApp: 'Open your mail app with the message prefilled',
+    closeToast: 'Close notification',
     required: 'This field is required',
     invalidEmail: 'Enter a valid email address',
     tooShort: 'Your message needs at least 10 characters',

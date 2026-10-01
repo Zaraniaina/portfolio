@@ -246,6 +246,7 @@ export default {
     errorGeneric:
       'Le message n’a pas pu être envoyé. Écrivez-moi directement par email, le lien de secours est juste à côté.',
     openMailApp: 'Ouvrir mon application mail avec le message prérempli',
+    closeToast: 'Fermer la notification',
     required: 'Champ obligatoire',
     invalidEmail: 'Saisis une adresse email valide',
     tooShort: 'Le message doit contenir au moins 10 caractères',

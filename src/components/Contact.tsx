@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Icon, type IconName } from './Icon'
-import { Button, Note, Section } from './ui'
+import { Button, Section } from './ui'
+import { Toast } from './Toast'
 import { CONTACT } from '../data/profile'
 import {
   isEmailConfigured,
@@ -19,6 +20,7 @@ type FormValues = {
 }
 
 type Status = 'idle' | 'sending' | 'sent' | 'mailto' | 'error'
+type ToastState = { tone: 'success' | 'error'; message: string } | null
 
 /**
  * Opens `href` (mailto:) WITHOUT navigating the SPA away. `location.assign`
@@ -62,6 +64,7 @@ function Spinner() {
 export function Contact() {
   const { t } = useTranslation()
   const [status, setStatus] = useState<Status>('idle')
+  const [toast, setToast] = useState<ToastState>(null)
   const [fallbackHref, setFallbackHref] = useState<string | null>(null)
 
   const {
@@ -87,10 +90,12 @@ export function Contact() {
       if (accepted) {
         reset() // Clear only once the send is actually confirmed.
         setStatus('sent')
+        setToast({ tone: 'success', message: t('contact.sentDetail') })
         return
       }
       setStatus('error')
       setFallbackHref(mailtoHref(payload, CONTACT.email, t('contact.formTitle')))
+      setToast({ tone: 'error', message: t('contact.errorGeneric') })
       return
     }
 
@@ -99,6 +104,7 @@ export function Contact() {
     // keeps every value and the visitor presses "Send" there.
     openExternalHref(mailtoHref(payload, CONTACT.email, t('contact.formTitle')))
     setStatus('mailto')
+    setToast({ tone: 'success', message: t('contact.sentMailtoDetail') })
   }
 
   const direct: { icon: IconName; label: string; value: string; href?: string; external?: boolean }[] = [
@@ -224,13 +230,6 @@ export function Contact() {
               </Button>
             </div>
 
-            {status === 'sent' ? <Note tone="success">{t('contact.sentDetail')}</Note> : null}
-            {status === 'mailto' ? (
-              <Note tone="success">{t('contact.sentMailtoDetail')}</Note>
-            ) : null}
-            {status === 'error' ? (
-              <Note tone="error">{t('contact.errorGeneric')}</Note>
-            ) : null}
             {status === 'error' && fallbackHref ? (
               <a
                 href={fallbackHref}
@@ -242,6 +241,15 @@ export function Contact() {
             ) : null}
           </form>
         </div>
+
+        {toast ? (
+          <Toast
+            tone={toast.tone}
+            message={toast.message}
+            onClose={() => setToast(null)}
+            closeLabel={t('contact.closeToast')}
+          />
+        ) : null}
 
         <aside className="md:col-span-5">
           <div className="rounded-[14px] border border-border bg-surface p-6">
