@@ -239,6 +239,8 @@ export default {
     sending: 'Sending',
     sent: 'Message sent',
     sentDetail: 'Thank you — I will reply as soon as I can.',
+    sentMailtoDetail:
+      'Your mail app opened with the message prefilled: press “Send” there to finish. Your entries above are kept.',
     errorGeneric:
       'The message could not be sent. Please email me directly instead; the fallback link is alongside.',
     openMailApp: 'Open your mail app with the message prefilled',

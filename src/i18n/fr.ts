@@ -241,6 +241,8 @@ export default {
     sending: 'Envoi en cours',
     sent: 'Message envoyé',
     sentDetail: 'Merci, je vous réponds dès que possible.',
+    sentMailtoDetail:
+      'Votre application mail s’est ouverte avec le message prérempli : cliquez « Envoyer » dans celle-ci pour finaliser. Vos saisies ci-dessus sont conservées.',
     errorGeneric:
       'Le message n’a pas pu être envoyé. Écrivez-moi directement par email, le lien de secours est juste à côté.',
     openMailApp: 'Ouvrir mon application mail avec le message prérempli',

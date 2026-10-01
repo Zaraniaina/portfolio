@@ -18,7 +18,22 @@ type FormValues = {
   message: string
 }
 
-type Status = 'idle' | 'sending' | 'sent' | 'error'
+type Status = 'idle' | 'sending' | 'sent' | 'mailto' | 'error'
+
+/**
+ * Opens `href` (mailto:) WITHOUT navigating the SPA away. `location.assign`
+ * would make the browser leave/reload the page and wipe every form field —
+ * a hidden anchor click hands the scheme to the OS and keeps the page alive.
+ */
+function openExternalHref(href: string) {
+  const anchor = document.createElement('a')
+  anchor.href = href
+  anchor.rel = 'noopener'
+  anchor.style.display = 'none'
+  document.body.appendChild(anchor)
+  anchor.click()
+  anchor.remove()
+}
 
 /** Small inline spinner shown while the EmailJS request is in flight. */
 function Spinner() {
@@ -52,6 +67,7 @@ export function Contact() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>()
 
@@ -69,6 +85,7 @@ export function Contact() {
     if (isEmailConfigured()) {
       const accepted = await sendContactEmail(payload)
       if (accepted) {
+        reset() // Clear only once the send is actually confirmed.
         setStatus('sent')
         return
       }
@@ -77,10 +94,11 @@ export function Contact() {
       return
     }
 
-    // EmailJS not configured in this deployment: open the visitor's mail
-    // client with everything prefilled, as before.
-    window.location.assign(mailtoHref(payload, CONTACT.email, t('contact.formTitle')))
-    setStatus('sent')
+    // EmailJS not configured in this deployment: hand the prefilled message
+    // to the visitor's mail client without navigating away, so the form
+    // keeps every value and the visitor presses "Send" there.
+    openExternalHref(mailtoHref(payload, CONTACT.email, t('contact.formTitle')))
+    setStatus('mailto')
   }
 
   const direct: { icon: IconName; label: string; value: string; href?: string; external?: boolean }[] = [
@@ -207,6 +225,9 @@ export function Contact() {
             </div>
 
             {status === 'sent' ? <Note tone="success">{t('contact.sentDetail')}</Note> : null}
+            {status === 'mailto' ? (
+              <Note tone="success">{t('contact.sentMailtoDetail')}</Note>
+            ) : null}
             {status === 'error' ? (
               <Note tone="error">{t('contact.errorGeneric')}</Note>
             ) : null}
