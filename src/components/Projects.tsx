@@ -72,7 +72,7 @@ function ProjectCard({ project }: { project: Project }) {
       {content.result ? (
         <div className="mt-6 rounded-[10px] border border-border bg-surface-alt p-4">
           <h4 className="flex items-center gap-2 text-[0.9375rem] font-semibold text-ink">
-            <Icon name="sparkles" size={18} className="text-accent-deco" />
+            <Icon name="target" size={18} className="text-accent-deco" />
             {t('projects.resultLabel')}
           </h4>
           <p className="measure mt-2 text-muted">{content.result}</p>
@@ -132,7 +132,7 @@ export function Projects() {
       {featured.map((project) => (
         <Reveal key={project.id} className="mb-12">
           <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent-soft px-3 py-1 text-[0.8125rem] font-semibold text-accent">
-            <Icon name="sparkles" size={16} />
+            <Icon name="star" size={16} />
             {t('projects.flagship')}
           </p>
           <ProjectCard project={project} />

@@ -45,7 +45,7 @@ export function About() {
                 key={quality}
                 className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-[0.875rem] text-accent"
               >
-                <Icon name="sparkles" size={16} />
+                <Icon name="badgeCheck" size={16} />
                 {quality}
               </li>
             ))}

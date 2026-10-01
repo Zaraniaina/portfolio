@@ -1,4 +1,5 @@
 import {
+  BadgeCheck,
   Bot,
   Briefcase,
   ChevronUp,
@@ -23,8 +24,9 @@ import {
   Phone,
   Plug,
   Send,
-  Sparkles,
+  Star,
   Sun,
+  Target,
   Terminal,
   Trophy,
   User,
@@ -44,6 +46,7 @@ import {
 export const STROKE_WIDTH = 1.75
 
 const REGISTRY = {
+  badgeCheck: BadgeCheck,
   bot: Bot,
   briefcase: Briefcase,
   chevronUp: ChevronUp,
@@ -68,8 +71,9 @@ const REGISTRY = {
   phone: Phone,
   plug: Plug,
   send: Send,
-  sparkles: Sparkles,
+  star: Star,
   sun: Sun,
+  target: Target,
   terminal: Terminal,
   trophy: Trophy,
   user: User,
