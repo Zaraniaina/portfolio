@@ -33,6 +33,17 @@ export function Nav() {
     }
   }, [menuOpen])
 
+  // Escape closes the mobile panel — expected on touch devices with keyboards
+  // and on desktop-sized windows that still show the panel (below md).
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [menuOpen])
+
   // Scroll-spy: mark the section whose top is closest above the fold.
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -67,7 +78,7 @@ export function Nav() {
       <div className="shell flex h-16 items-center justify-between gap-2 md:gap-4">
         <a
           href={location.pathname === '/en' ? '/en#top' : '/#top'}
-          className="inline-flex min-h-11 items-center font-display text-[0.9375rem] font-semibold tracking-tight whitespace-nowrap text-ink md:text-[1.0625rem]"
+          className="inline-flex min-h-11 items-center font-display text-[0.9375rem] font-semibold tracking-tight whitespace-nowrap text-ink max-[380px]:text-[0.8125rem] md:text-[1.0625rem]"
         >
           Zaraniaina Emilson
         </a>
@@ -111,7 +122,9 @@ export function Nav() {
             className="inline-flex min-h-11 items-center gap-1.5 rounded-[10px] px-2 text-[0.875rem] font-semibold whitespace-nowrap text-muted transition-colors duration-150 hover:bg-accent-soft hover:text-ink"
           >
             <Icon name="languages" size={18} />
-            <span aria-hidden="true" className="whitespace-nowrap">
+            {/* Icon alone below 380px: the full label cannot fit next to the
+                brand name without pushing the header into horizontal scroll. */}
+            <span aria-hidden="true" className="whitespace-nowrap max-[380px]:hidden">
               {currentLanguage === 'fr' ? 'FR | EN' : 'EN | FR'}
             </span>
           </button>

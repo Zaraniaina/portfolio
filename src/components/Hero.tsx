@@ -61,7 +61,7 @@ export function Hero() {
               background. object-cover keeps the portrait source centred on the
               face inside a square frame. */}
           <div
-            className="mx-auto w-full max-w-[380px] overflow-hidden rounded-[20px] border border-border bg-surface-alt"
+            className="mx-auto w-full max-w-[280px] min-[480px]:max-w-[380px] overflow-hidden rounded-[20px] border border-border bg-surface-alt"
             style={{ aspectRatio: '1 / 1' }}
           >
             <img
