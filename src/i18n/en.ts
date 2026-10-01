@@ -31,7 +31,7 @@ export default {
     title: 'Software & web developer · Database designer',
     tagline:
       'I turn business requirements into tools that hold up in daily use: sales, stock, invoicing, and site management.',
-    status: 'IT Project Assistant at Tia Info Madagascar · Master’s student in Computer Engineering',
+    status: "Master's student in Computer Engineering · Most recently IT Project Assistant at Tia Info Madagascar",
     proof: 'Online and offline construction ERP, plus a Tauri desktop app',
     location: 'Toamasina, Madagascar',
     ctaContact: 'Get in touch',
@@ -44,7 +44,7 @@ export default {
     lead: 'I build web applications, management software and databases — then keep them running.',
     body: [
       'I hold a degree in Mathematics, Computer Science and Applications, and I am currently completing a Master’s in Computer Engineering at the University of Toamasina.',
-      'I have built several sales, stock and invoicing tools for local businesses, and I now work on TiaInfoBuild, an ERP for the construction sector that runs both online and offline.',
+      'I have built several sales, stock and invoicing tools for local businesses, and I recently worked on TiaInfoBuild, an ERP for the construction sector that runs both online and offline.',
       'I also work with artificial intelligence: LLMs, prompt engineering, coding agents, and integration through MCP.',
     ],
     statsTitle: 'By the numbers',
@@ -136,6 +136,18 @@ export default {
         problem: 'Sales and stock were being tracked by hand.',
         contribution: ['Database design', 'Application development'],
       },
+      nyTiaSary: {
+        title: 'NY TIA SARY — photo & video studio platform',
+        summary:
+          'A complete web platform for a photography and video production studio in Toamasina: public website, admin area and client area.',
+        contribution: [
+          'Public website: home, services, filterable portfolio with lightbox, blog and quote requests',
+          'Admin area: dashboard, bookings with contracts and invoices, calendar, media delivery',
+          'Client area: online booking and case tracking',
+          'Secure authentication: bcrypt, security question, 4-step password reset',
+          'Quote replies and notifications by email (PHPMailer), contracts and invoices as PDF (Dompdf)',
+        ],
+      },
       eventsite: {
         title: 'Event website — single page',
         summary:
@@ -146,6 +158,11 @@ export default {
           'Background music with manual control and music-reactive ambience (particles, halos, equaliser)',
           'Automated publishing to GitHub Pages',
         ],
+      },
+      portfolio: {
+        title: 'Portfolio — this site',
+        summary:
+          'The source code of the site you are browsing: a bilingual (French and English) portfolio with light and dark themes, built with React 19, TypeScript, Vite and Tailwind CSS.',
       },
       cyberlanga: {
         title: 'Sales, stock and invoicing — Cyber Langa',

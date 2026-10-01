@@ -31,7 +31,7 @@ export default {
     title: 'Développeur logiciel & web · Concepteur de bases de données',
     tagline:
       'Je transforme des besoins métiers en outils qui tiennent la route : ventes, stocks, facturation, gestion de chantier.',
-    status: 'Assistant projet informatique chez Tia Info Madagascar · Master 2 en Génie Informatique',
+    status: 'Étudiant en Master 2 de Génie Informatique · Dernier poste : assistant projet informatique chez Tia Info Madagascar',
     proof: 'ERP BTP en ligne et hors ligne, application de bureau Tauri',
     location: 'Toamasina, Madagascar',
     ctaContact: 'Me contacter',
@@ -44,7 +44,7 @@ export default {
     lead: 'Je conçois des applications web, des logiciels de gestion et des bases de données, puis j’assure leur maintenance.',
     body: [
       'Diplômé en Mathématiques, Informatique et Applications, je suis actuellement en Master 2 en Génie Informatique à l’Université de Toamasina.',
-      'J’ai réalisé plusieurs outils de gestion de vente, de stock et de facturation pour des structures locales, et je travaille aujourd’hui sur TiaInfoBuild, un ERP de gestion pour le bâtiment, utilisable en ligne comme hors ligne.',
+      'J’ai réalisé plusieurs outils de gestion de vente, de stock et de facturation pour des structures locales, et j’ai récemment travaillé sur TiaInfoBuild, un ERP de gestion pour le bâtiment, utilisable en ligne comme hors ligne.',
       'Je travaille aussi avec l’intelligence artificielle : LLM, prompt engineering, agents de codage et intégration via MCP.',
     ],
     statsTitle: 'En quelques chiffres',
@@ -139,6 +139,18 @@ export default {
           'Développement de l’application',
         ],
       },
+      nyTiaSary: {
+        title: 'NY TIA SARY — plateforme pour studio photo & vidéo',
+        summary:
+          'Plateforme web complète pour un studio de photographie et de production vidéo de Toamasina : site vitrine, espace administrateur et espace client.',
+        contribution: [
+          'Site vitrine public : accueil, services, portfolio filtrable avec lightbox, blog et demande de devis',
+          'Espace administrateur : tableau de bord, réservations avec contrats et factures, calendrier, livraison des médias',
+          'Espace client : réservation en ligne et suivi des dossiers',
+          'Authentification sécurisée : bcrypt, question de sécurité, réinitialisation en 4 étapes',
+          'Réponses aux devis et notifications par email (PHPMailer), contrats et factures en PDF (Dompdf)',
+        ],
+      },
       eventsite: {
         title: 'Site événementiel — page unique',
         summary:
@@ -149,6 +161,11 @@ export default {
           'Musique de fond avec contrôle manuel et ambiance réactive (particules, halos, égaliseur)',
           'Publication automatisée sur GitHub Pages',
         ],
+      },
+      portfolio: {
+        title: 'Portfolio — ce site',
+        summary:
+          'Le code source du site que vous parcourez : portfolio bilingue (français et anglais), thème clair et sombre, React 19, TypeScript, Vite et Tailwind CSS.',
       },
       cyberlanga: {
         title: 'Outil de vente, stock et facturation — Cyber Langa',

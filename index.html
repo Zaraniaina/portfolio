@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Zaraniaina Emilson — Développeur logiciel & web | Toamasina, Madagascar</title>
@@ -21,8 +21,278 @@
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Nunito+Sans:wght@400;600&family=Sora:wght@500;600&display=swap"
       rel="stylesheet"
     />
+
+    <style>
+      /* =========================================================================
+         Écran de chargement (splash) — logo ZE (texte noir) sur fond clair
+         brume, halo bleu pulsé derrière le logo, barre de progression en
+         dégradé du bleu du logo avec pourcentage (JetBrains Mono). Défini
+         ici, AVANT le bundle JS, pour s'afficher
+         instantanément ; il est retiré par src/lib/splash.ts quand l'app est prête.
+         ========================================================================= */
+      :root {
+        --splash-bg: #f3f6f7; /* Brume — même fond que la page claire */
+        --splash-blue: #0057f7;
+        --splash-blue-soft: #4a90ff;
+      }
+      #splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 34px;
+        background: var(--splash-bg);
+        opacity: 1;
+        transition: opacity 350ms ease-out;
+        /* Apparition douce de l'écran lui-même (sans fill : le fondu de
+           sortie .splash-leaving doit rester piloté par la transition). */
+        animation: splash-in 250ms ease-out;
+      }
+      #splash.splash-leaving {
+        opacity: 0;
+        pointer-events: none;
+      }
+      /* Conteneur du logo : le halo est positionné derrière, centré. */
+      #splash .splash-logo {
+        position: relative;
+        display: flex;
+      }
+      #splash .splash-halo {
+        position: absolute;
+        inset: -20%;
+        z-index: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 87, 247, 0.3) 0%,
+          rgba(74, 144, 255, 0.12) 45%,
+          transparent 70%
+        );
+        filter: blur(24px);
+        animation: splash-halo 2.4s ease-in-out infinite;
+      }
+      #splash img {
+        position: relative;
+        z-index: 1;
+        width: min(66vw, 520px);
+        height: auto;
+        display: block;
+        /* Le logo arrive en douceur, en même temps que la page. */
+        animation: splash-logo-in 600ms ease-out both;
+      }
+      /* Barre et pourcentage, sur une même ligne. */
+      #splash .splash-progress {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      #splash .splash-bar {
+        width: min(46vw, 340px);
+        height: 4px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(36, 52, 63, 0.12);
+      }
+      #splash .splash-pct {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 14px;
+        /* Bruine — texte secondaire, lisible sur brume */
+        color: #566873;
+        min-width: 4ch;
+      }
+      #splash .splash-bar-fill {
+        height: 100%;
+        width: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--splash-blue), var(--splash-blue-soft));
+        box-shadow: 0 0 12px rgba(0, 87, 247, 0.45);
+        transform-origin: left center;
+        transform: scaleX(0);
+        /* La barre n'atteint jamais 100 % tant que l'app n'a pas signalé être prête :
+           elle avance par à-pas vers 92 % puis se synchronise à la sortie réelle. */
+        animation: splash-load 2.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+      }
+      @keyframes splash-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes splash-halo {
+        0%,
+        100% {
+          transform: scale(0.92);
+          opacity: 0.55;
+        }
+        50% {
+          transform: scale(1.06);
+          opacity: 0.95;
+        }
+      }
+      @keyframes splash-logo-in {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes splash-load {
+        0% {
+          transform: scaleX(0);
+        }
+        55% {
+          transform: scaleX(0.62);
+        }
+        85% {
+          transform: scaleX(0.86);
+        }
+        100% {
+          transform: scaleX(0.92);
+        }
+      }
+      /* Si JavaScript ne s'exécute jamais (erreur, blocage), le splash s'efface
+         tout seul après 6 s et ne bloque jamais l'accès au contenu. */
+      @keyframes splash-auto-out {
+        to {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+      html.splash-stuck #splash {
+        animation:
+          splash-in 250ms ease-out,
+          splash-auto-out 400ms ease-out 6s forwards;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #splash,
+        #splash img,
+        #splash .splash-halo,
+        #splash .splash-bar-fill {
+          animation: none;
+        }
+        #splash img,
+        #splash .splash-halo {
+          opacity: 1;
+        }
+        #splash .splash-bar-fill {
+          transform: scaleX(0.92);
+        }
+        html.splash-stuck #splash {
+          animation: splash-auto-out 200ms ease-out 1.5s forwards;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Écran de chargement : retiré par src/lib/splash.ts au montage de l'app. -->
+    <div id="splash" aria-hidden="true">
+      <div class="splash-logo">
+        <div class="splash-halo"></div>
+      <img
+        src="/logo-ze.webp"
+          alt=""
+          width="640"
+          height="373"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+      <div class="splash-progress">
+        <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+        <span class="splash-pct" id="splash-pct">0 %</span>
+      </div>
+    </div>
+    <script>
+      // Classe de sécurité : si le bundle JS ne monte pas, le splash se retire
+      // de lui-même (voir le CSS html.splash-stuck ci-dessus).
+      document.documentElement.classList.add('splash-stuck');
+
+      // Pourcentage synchronisé avec l'animation CSS de la barre : mêmes
+      // paliers (62 % à 55 %, 86 % à 85 %, 92 % à 100 %) et même
+      // cubic-bezier entre les paliers. Mouvement réduit : 92 % fixe.
+      (function () {
+        var pct = document.getElementById('splash-pct');
+        if (!pct) return;
+
+        var reduced = false;
+        try {
+          reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        } catch (e) {
+          /* matchMedia peut lever en mode restreint */
+        }
+
+        var STOPS = [
+          [0, 0],
+          [0.55, 62],
+          [0.85, 86],
+          [1, 92],
+        ];
+        var DURATION_MS = 2600;
+        var BEZIER = [0.22, 0.61, 0.36, 1];
+
+        // Ordonnée y de la cubic-bezier pour une avancement x donné.
+        function bezierY(x) {
+          var t = x;
+          for (var i = 0; i < 8; i++) {
+            var cx =
+              3 * (1 - t) * (1 - t) * t * BEZIER[0] +
+              3 * (1 - t) * t * t * BEZIER[2] +
+              t * t * t -
+              x;
+            if (Math.abs(cx) < 1e-5) break;
+            var dx =
+              3 * (1 - t) * (1 - t) * BEZIER[0] +
+              6 * (1 - t) * t * (BEZIER[2] - BEZIER[0]) +
+              3 * t * t * (1 - BEZIER[2]);
+            if (Math.abs(dx) < 1e-6) break;
+            t -= cx / dx;
+          }
+          return (
+            3 * (1 - t) * (1 - t) * t * BEZIER[1] +
+            3 * (1 - t) * t * t * BEZIER[3] +
+            t * t * t
+          );
+        }
+
+        function valueAt(elapsed) {
+          var p = Math.min(1, elapsed / DURATION_MS);
+          for (var i = 1; i < STOPS.length; i++) {
+            if (p <= STOPS[i][0]) {
+              var t0 = STOPS[i - 1][0];
+              var v0 = STOPS[i - 1][1];
+              var t1 = STOPS[i][0];
+              var v1 = STOPS[i][1];
+              var local = (p - t0) / (t1 - t0);
+              return v0 + (v1 - v0) * bezierY(local);
+            }
+          }
+          return STOPS[STOPS.length - 1][1];
+        }
+
+        if (reduced) {
+          pct.textContent = '92 %';
+          return;
+        }
+
+        var start = performance.now();
+        function tick(now) {
+          // Le splash peut être retiré avant la fin (app prête) : on s'arrête.
+          if (!pct.isConnected) return;
+          var done = now - start >= DURATION_MS;
+          pct.textContent = (done ? 92 : Math.round(valueAt(now - start))) + ' %';
+          if (!done) window.requestAnimationFrame(tick);
+        }
+        window.requestAnimationFrame(tick);
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

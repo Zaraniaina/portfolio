@@ -41,6 +41,20 @@ export const PROJECTS: Project[] = [
     imageAlt: null,
   },
   {
+    id: 'nyTiaSary',
+    featured: false,
+    stack: [
+      { labelKey: 'stack.frontend', items: ['JavaScript', 'Chart.js', 'FullCalendar', 'ScrollReveal'] },
+      { labelKey: 'stack.backend', items: ['PHP', 'MySQL', 'PHPMailer', 'Dompdf'] },
+    ],
+    // Features and stack come from the repository README (verified 2026-09-30);
+    // no public demo exists yet.
+    repoUrl: 'https://github.com/Zaraniaina/NY_TIA_SARY',
+    demoUrl: null,
+    image: null,
+    imageAlt: null,
+  },
+  {
     id: 'eventsite',
     featured: false,
     stack: [
@@ -49,6 +63,19 @@ export const PROJECTS: Project[] = [
     // docs/projets.md: the code address returned 404 during its last check;
     // it now answers, but the demo URL is still unknown and stays hidden.
     repoUrl: 'https://github.com/Zaraniaina/mariage-Zaraniaina-Sarobidy',
+    demoUrl: null,
+    image: null,
+    imageAlt: null,
+  },
+  {
+    id: 'portfolio',
+    featured: false,
+    stack: [
+      { labelKey: 'stack.frontend', items: ['React', 'TypeScript', 'Vite', 'Tailwind CSS'] },
+    ],
+    // Same README and files as this site: it is the public GitHub repository
+    // of this very portfolio (verified 2026-09-30).
+    repoUrl: 'https://github.com/Zaraniaina/portfolio',
     demoUrl: null,
     image: null,
     imageAlt: null,

@@ -36,7 +36,7 @@ export type Role = {
 }
 
 export const ROLES: Role[] = [
-  { id: 'tiaInfo', start: '2026-07', end: null, location: 'Mangarano II, Toamasina' },
+  { id: 'tiaInfo', start: '2026-07', end: '2026-09', location: 'Mangarano II, Toamasina' },
   { id: 'cyberLangaSupport', start: '2025-06', end: '2025-11', location: 'Morarano, Toamasina' },
   { id: 'tsararivotra', start: '2025-01', end: '2025-03', location: 'Verrery, Toamasina' },
   { id: 'cyberLangaDev', start: '2024-10', end: '2024-12', location: 'Morarano, Toamasina' },

@@ -1,0 +1,62 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Une seule exécution à la fois ; un nouveau push annule le déploiement en cours.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          # Optionnel : active l'envoi EmailJS sur le site déployé.
+          # Secrets à créer dans Settings → Secrets and variables → Actions.
+          VITE_EMAILJS_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}
+          VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
+
+      # Fallback SPA : GitHub sert 404.html sur toute URL inconnue (ex. /en),
+      # et l'app React route ensuite vers la bonne langue.
+      - run: cp dist/index.html dist/404.html
+
+      # .nojekyll : ne pas laisser Jekyll filtrer les fichiers _vendor.
+      - run: touch dist/.nojekyll
+
+      - uses: actions/configure-pages@v5
+        with:
+          # Active Pages automatiquement (source : GitHub Actions) si ce n'est pas déjà fait.
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

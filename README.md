@@ -70,10 +70,21 @@ Le thème sombre utilise `[data-theme="dark"]` et suit `prefers-color-scheme` pa
 
 ## Déployer
 
-`npm run build` produit `dist/`. `vite.config.ts` définit `base: './'`, donc le build fonctionne depuis n'importe quel sous-chemin.
+Le site est déployé automatiquement sur **GitHub Pages** à chaque push sur `main`
+(via [.github/workflows/deploy.yml](.github/workflows/deploy.yml)) :
+URL finale `https://zaraniaina.github.io/portfolio/`.
 
-- **Netlify / Vercel** : commande `npm run build`, dossier publié `dist`.
-- **GitHub Pages** : poussez `dist/` sur la branche `gh-pages`, ou configurez l'action pour utiliser la racine du dépôt comme site.
+- `vite.config.ts` définit `base: '/portfolio/'` (sous-chemin du dépôt) et le
+  `BrowserRouter` en dérive son `basename` (`src/App.tsx`).
+- Le workflow copie `index.html` en `404.html` (routage SPA sur Pages) et ajoute
+  `.nojekyll`.
+- Pour l'envoi EmailJS en production : ajoutez les secrets
+  `VITE_EMAILJS_TEMPLATE_ID` et `VITE_EMAILJS_PUBLIC_KEY` dans
+  *Settings → Secrets and variables → Actions* (sinon le formulaire utilise le
+  repli `mailto:`).
+
+**Netlify / Vercel** : commande `npm run build`, dossier publié `dist` — changer
+alors `base` dans `vite.config.ts` selon le domaine (racine → `base: '/'`).
 
 ## Contact
 
