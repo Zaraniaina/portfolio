@@ -117,7 +117,12 @@
         transform: scaleX(0);
         /* La barre n'atteint jamais 100 % tant que l'app n'a pas signalé être prête :
            elle avance par à-pas vers 92 % puis se synchronise à la sortie réelle. */
-        animation: splash-load 2.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        animation: splash-load 5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+      }
+      /* Sortie : l'app est prête (splash.ts) — la barre termine à 100 %. */
+      #splash.splash-leaving .splash-bar-fill {
+        animation: none;
+        transform: scaleX(1);
       }
       @keyframes splash-in {
         from {
@@ -226,6 +231,13 @@
         var pct = document.getElementById('splash-pct');
         if (!pct) return;
 
+        // 100 % à la sortie réelle : hook appelé par src/lib/splash.ts.
+        var finished = false;
+        window.__splashFinish = function () {
+          finished = true;
+          pct.textContent = '100 %';
+        };
+
         var reduced = false;
         try {
           reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -239,7 +251,7 @@
           [0.85, 86],
           [1, 92],
         ];
-        var DURATION_MS = 2600;
+        var DURATION_MS = 5000;
         var BEZIER = [0.22, 0.61, 0.36, 1];
 
         // Ordonnée y de la cubic-bezier pour une avancement x donné.
@@ -289,7 +301,7 @@
         var start = performance.now();
         function tick(now) {
           // Le splash peut être retiré avant la fin (app prête) : on s'arrête.
-          if (!pct.isConnected) return;
+          if (!pct.isConnected || finished) return;
           var done = now - start >= DURATION_MS;
           pct.textContent = (done ? 92 : Math.round(valueAt(now - start))) + ' %';
           if (!done) window.requestAnimationFrame(tick);
