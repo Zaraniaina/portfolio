@@ -112,6 +112,7 @@ export function Contact() {
     { icon: 'phone', label: t('contact.phoneLabel'), value: CONTACT.phoneDisplay, href: CONTACT.phoneHref },
     { icon: 'messageCircle', label: t('contact.whatsappLabel'), value: CONTACT.phoneDisplay, href: CONTACT.whatsappHref, external: true },
     { icon: 'codeXml', label: t('contact.githubLabel'), value: 'github.com/Zaraniaina', href: CONTACT.githubHref, external: true },
+    { icon: 'externalLink', label: t('contact.facebookLabel'), value: 'facebook.com/stan.lay.196400', href: CONTACT.facebookHref, external: true },
     { icon: 'mapPin', label: t('contact.locationLabel'), value: CONTACT.location },
   ]
 

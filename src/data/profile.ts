@@ -14,6 +14,7 @@ export type Contact = {
   phoneHref: string
   whatsappHref: string
   githubHref: string
+  facebookHref: string
   /** Full street address is deliberately not published — see docs/§11. */
   location: string
 }
@@ -24,6 +25,7 @@ export const CONTACT: Contact = {
   phoneHref: 'tel:+261329167667',
   whatsappHref: 'https://wa.me/261329167667',
   githubHref: 'https://github.com/Zaraniaina',
+  facebookHref: 'https://www.facebook.com/stan.lay.196400/',
   location: 'Toamasina, Madagascar',
 }
 

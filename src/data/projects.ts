@@ -60,10 +60,10 @@ export const PROJECTS: Project[] = [
     stack: [
       { labelKey: 'stack.frontend', items: ['TypeScript', 'Vite'] },
     ],
-    // docs/projets.md: the code address returned 404 during its last check;
-    // it now answers, but the demo URL is still unknown and stays hidden.
+    // The event site is published to GitHub Pages (verified 2026-10-02);
+    // the demo URL opens the live wedding site.
     repoUrl: 'https://github.com/Zaraniaina/mariage-Zaraniaina-Sarobidy',
-    demoUrl: null,
+    demoUrl: 'https://zaraniaina.github.io/mariage-Zaraniaina-Sarobidy/',
     image: null,
     imageAlt: null,
   },
@@ -74,9 +74,10 @@ export const PROJECTS: Project[] = [
       { labelKey: 'stack.frontend', items: ['React', 'TypeScript', 'Vite', 'Tailwind CSS'] },
     ],
     // Same README and files as this site: it is the public GitHub repository
-    // of this very portfolio (verified 2026-09-30).
+    // of this very portfolio (verified 2026-09-30), published at the live
+    // address below (verified 2026-10-02).
     repoUrl: 'https://github.com/Zaraniaina/portfolio',
-    demoUrl: null,
+    demoUrl: 'https://zaraniaina.github.io/portfolio/',
     image: null,
     imageAlt: null,
   },

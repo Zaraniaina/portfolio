@@ -113,7 +113,7 @@ function ProjectCard({ project }: { project: Project }) {
           ) : null}
           {project.demoUrl ? (
             <ButtonLink href={project.demoUrl} variant="discreet" icon="monitorPlay" external>
-              {t('projects.demo')}
+              {t('projects.viewSite')}
             </ButtonLink>
           ) : null}
         </div>

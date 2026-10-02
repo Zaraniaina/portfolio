@@ -107,7 +107,7 @@ export default {
     contributionLabel: 'My contribution',
     resultLabel: 'Outcome',
     code: 'Code',
-    demo: 'Demo',
+    viewSite: 'View site',
     repository: 'View repository',
     items: {
       tiainfobuild: {
@@ -253,6 +253,7 @@ export default {
     phoneLabel: 'Phone',
     whatsappLabel: 'WhatsApp',
     githubLabel: 'GitHub',
+    facebookLabel: 'Facebook',
     locationLabel: 'Location',
   },
 
