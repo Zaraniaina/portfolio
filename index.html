@@ -9,11 +9,19 @@
     <link rel="apple-touch-icon" href="/favicon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- SEO : ce bloc est réécrit par scripts/prerender.mjs pour chaque langue
+         (dist/index.html et dist/en/index.html). Les valeurs ci-dessous sont la
+         version française, celle servie par `vite dev` ; la version anglaise
+         est produite au build à partir des mêmes dictionnaires
+         (src/seo/head.ts). Ne pas modifier à la main sans mettre à jour
+         src/seo/head.ts. -->
+    <!--seo:start-->
     <title>Zaraniaina Emilson — Développeur logiciel & web | Toamasina, Madagascar</title>
     <meta
       name="description"
       content="Portfolio de Zaraniaina Emilson, développeur logiciel et web à Toamasina. Java, Python, React, Spring Boot, FastAPI, bases de données et intelligence artificielle."
     />
+    <!--seo:end-->
     <meta name="author" content="Zaraniaina Emilson" />
     <meta name="theme-color" content="#f3f6f7" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1c2a32" media="(prefers-color-scheme: dark)" />
@@ -236,6 +244,19 @@
         }
       }
     </style>
+
+    <!-- Sans JavaScript, le contenu pré-rendu reste en opacité 0 (les sections
+         s'affichent via la classe .reveal de src/index.css, pilotée par un
+         IntersectionObserver). On les rend visibles pour que la page reste
+         lisible et indexable même si le bundle ne s'exécute pas. -->
+    <noscript>
+      <style>
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
     <!-- Écran de chargement : retiré par src/lib/splash.ts au montage de l'app. -->

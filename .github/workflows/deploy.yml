@@ -35,9 +35,9 @@ jobs:
           VITE_EMAILJS_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}
           VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
 
-      # Fallback SPA : GitHub sert 404.html sur toute URL inconnue (ex. /en),
-      # et l'app React route ensuite vers la bonne langue.
-      - run: cp dist/index.html dist/404.html
+      # 404.html et sitemap.xml sont produits par `npm run build`
+      # (scripts/prerender.mjs) : le fallback SPA porte un noindex explicite
+      # et le sitemap liste les deux URL canoniques avec un lastmod frais.
 
       # .nojekyll : ne pas laisser Jekyll filtrer les fichiers _vendor.
       - run: touch dist/.nojekyll

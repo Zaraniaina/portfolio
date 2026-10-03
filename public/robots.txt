@@ -1,0 +1,20 @@
+# robots.txt — portfolio de Zaraniaina Emilson
+# Autorisation d'indexation explicite (comportement par défaut de Google en
+# l'absence de fichier, mais on l'exprime pour lever toute ambiguïté).
+#
+# Attention : ce fichier est servi sur https://zaraniaina.github.io/portfolio/
+# (site projet GitHub Pages). Google n'autorise officiellement que le
+# robots.txt à la racine d'un hôte — ici zaraniaina.github.io/robots.txt, qui
+# appartient à la page utilisateur et n'est pas versionnée dans ce dépôt. Ce
+# fichier reste utile pour les robots qui lisent le répertoire courant, mais le
+# contrôle d'indexation fait autorité ici, ce sont les balises
+# <meta name="robots"> des pages et le sitemap déclaré ci-dessous.
+
+User-agent: *
+Allow: /
+
+# Page de secours servie sur toute URL inconnue : jamais indexable
+# (noindex posé par le pré-rendu), mais on épargne un crawl inutile.
+Disallow: /404.html
+
+Sitemap: https://zaraniaina.github.io/portfolio/sitemap.xml
