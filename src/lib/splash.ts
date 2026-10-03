@@ -2,9 +2,12 @@
  * Retire l'écran de chargement défini dans index.html.
  *
  * Le splash est du HTML statique : il s'affiche instantanément, avant même le
- * téléchargement du bundle. L'écran complet (5 s) n'est montré qu'à la
- * première visite de la session — un marqueur en `sessionStorage` en garde la
- * mémoire — ; toutes les visites suivantes sont abrégées à 1 s.
+ * téléchargement du bundle. Il ne sert qu'à la toute première ouverture de
+ * l'onglet (5 s) ; un marqueur en `sessionStorage` en garde la mémoire. Tous
+ * les chargements suivants de la même session — rechargement, `/en` tapé
+ * directement, retour arrière — n'affichent aucun splash : le HTML est déjà
+ * pré-rendu et servi depuis le cache, et le masquer ferait perdre 1 s
+ * visibles pour rien.
  *
  * La durée est décidée par le script inline du `<head>` de index.html, avant le
  * premier rendu, pour que l'animation CSS de la barre, le pourcentage et ce
@@ -16,10 +19,10 @@
 
 /** Clé du marqueur de session : un splash complet a déjà été affiché. */
 const SEEN_KEY = 'zaraniaina:splash-seen'
-/** Durée de l'écran complet, à la première visite de la session. */
+/** Durée de l'écran complet, à la première ouverture de la session. */
 const FIRST_VISIT_MS = 5000
-/** Durée des visites suivantes. */
-const RETURN_VISIT_MS = 1000
+/** Visites suivantes : aucune — le splash est retiré sans animation. */
+const RETURN_VISIT_MS = 0
 
 const startedAt = performance.now()
 
@@ -27,10 +30,12 @@ declare global {
   interface Window {
     /** Hook du script inline de index.html : affiche 100 % avant la sortie. */
     __splashFinish?: () => void
-    /** Durée retenue par le script inline de index.html (5000 ou 1000). */
+    /** Durée retenue par le script inline de index.html (5000 ou 0). */
     __splashDurationMs?: number
-    /** true si le splash complet est affiché (première visite de la session). */
+    /** true si le splash complet est affiché (première ouverture de la session). */
     __splashFirstVisit?: boolean
+    /** true si la session est déjà marquée : le splash ne doit pas s'afficher. */
+    __splashSkip?: boolean
   }
 }
 
@@ -64,7 +69,17 @@ export function removeSplash(): void {
 
   document.documentElement.classList.remove('splash-stuck')
 
-  const wait = Math.max(0, resolveDuration() - (performance.now() - startedAt))
+  const duration = resolveDuration()
+
+  // Session déjà marquée : le splash a été masqué dès la première frame par
+  // `html.splash-skip`. On le supprime sans animation de sortie — la page est
+  // visible en dessous, il n'y a rien à faire disparaître.
+  if (duration === 0) {
+    splash.remove()
+    return
+  }
+
+  const wait = Math.max(0, duration - (performance.now() - startedAt))
   window.setTimeout(() => {
     window.__splashFinish?.()
     splash.classList.add('splash-leaving')

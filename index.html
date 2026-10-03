@@ -34,16 +34,22 @@
       rel="stylesheet"
     />
 
-    <!-- Durée du splash : l'écran complet (5 s) n'est affiché qu'à la PREMIÈRE
-         visite de la session (sessionStorage) ; toutes les suivants sont
-         abrégées à 1 s. La décision est prise ici, avant le <style> et le premier
-         rendu, pour que l'animation CSS de la barre, le pourcentage et
-         src/lib/splash.ts partagent exactement la même durée. -->
+    <!-- Affichage du splash : l'écran de chargement n'apparaît qu'À LA PREMIÈRE
+         ouverture de l'onglet (sessionStorage). Tous les chargements suivants de
+         cette session — rechargement, /en/ tapé directement, retour arrière —
+         affichent la page immédiatement, sans splash : le contenu est déjà dans
+         le cache, masquer la page 1 s ne ferait que la ralentir.
+
+         La décision est prise ici, avant le <style> et le premier rendu, pour que
+         l'animation CSS de la barre, le pourcentage et src/lib/splash.ts
+         partagent exactement la même durée. La classe `splash-skip` masque
+         #splash dès sa première frame : aucun clignotement avant même que le
+         <body> soit analysé. -->
     <script>
       (function () {
         var SEEN_KEY = 'zaraniaina:splash-seen';
         var FIRST_VISIT_MS = 5000;
-        var RETURN_VISIT_MS = 1000;
+        var RETURN_VISIT_MS = 0;
         var firstVisit = true;
         try {
           firstVisit = sessionStorage.getItem(SEEN_KEY) === null;
@@ -56,7 +62,11 @@
         var duration = firstVisit ? FIRST_VISIT_MS : RETURN_VISIT_MS;
         window.__splashDurationMs = duration;
         window.__splashFirstVisit = firstVisit;
+        window.__splashSkip = !firstVisit;
         document.documentElement.style.setProperty('--splash-duration', duration + 'ms');
+        if (!firstVisit) {
+          document.documentElement.classList.add('splash-skip');
+        }
         // Filet de sécurité : il part 1 s après la durée, quelle qu'elle soit.
         document.documentElement.style.setProperty(
           '--splash-stuck-delay',
@@ -77,11 +87,17 @@
         --splash-bg: #f3f6f7; /* Brume — même fond que la page claire */
         --splash-blue: #0057f7;
         --splash-blue-soft: #4a90ff;
-        /* Durées pilotées par le script ci-dessus : 5 s à la 1re visite de la
-           session, 1 s ensuite. Les valeurs ci-dessous sont les valeurs par
+        /* Durées pilotées par le script ci-dessus : 5 s à la 1re ouverture de
+           la session, 0 ensuite. Les valeurs ci-dessous sont les valeurs par
            défaut, utilisées si ce script ne s'exécute pas. */
         --splash-duration: 5s;
         --splash-stuck-delay: 6s;
+      }
+      /* Session déjà marquée : le splash n'est jamais affiché. `display: none`
+         (et non `opacity`) garantit qu'il ne capte ni le clic ni le focus,
+         même s'il est retiré du DOM quelques ms plus tard par splash.ts. */
+      html.splash-skip #splash {
+        display: none;
       }
       #splash {
         position: fixed;
@@ -259,7 +275,8 @@
     </noscript>
   </head>
   <body>
-    <!-- Écran de chargement : retiré par src/lib/splash.ts au montage de l'app. -->
+    <!-- Écran de chargement : retiré par src/lib/splash.ts au montage de l'app.
+         Masqué d'emblée si la session a déjà été marquée (html.splash-skip). -->
     <div id="splash" aria-hidden="true">
       <div class="splash-logo">
         <div class="splash-halo"></div>
@@ -285,10 +302,14 @@
       // Pourcentage synchronisé avec l'animation CSS de la barre : mêmes
       // paliers (62 % à 55 %, 86 % à 85 %, 92 % à 100 %) et même
       // cubic-bezier entre les paliers. Mouvement réduit : 92 % fixe.
-      // La durée est celle décidée en <head> (5 s à la 1re visite de la
-      // session, 1 s ensuite) : c'est la variable CSS --splash-duration
+      // La durée est celle décidée en <head> (5 s à la 1re ouverture de la
+      // session, 0 ensuite) : c'est la variable CSS --splash-duration
       // utilisée par l'animation de la barre.
       (function () {
+        // Session déjà marquée : le splash est masqué, inutile de le faire
+        // tourner (et `DURATION_MS || 5000` retomberait à tort sur 5 s).
+        if (window.__splashSkip) return;
+
         var pct = document.getElementById('splash-pct');
         if (!pct) return;
 
